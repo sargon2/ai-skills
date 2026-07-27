@@ -1,0 +1,12 @@
+interface:
+  display_name: Two-Stage Refiner
+  short_description: Run a fresh-context two-pass workflow
+  default_prompt: Use $two-stage-refiner to draft a result in one fresh subagent and
+    refine it in a second.
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true
