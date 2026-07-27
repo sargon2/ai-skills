@@ -1,6 +1,6 @@
 ---
 name: "discovery-and-analysis"
-description: "Separate expansive discovery from structured, repeatable analysis; restart analysis whenever it reveals a new discovery."
+description: "Produce persistent UUID receipts and exact-output hashes for every Discovery and Analysis run."
 ---
 
 # Discovery and Analysis
@@ -16,6 +16,22 @@ Extract:
 - The requested output, if any
 
 Ask a question only when missing information prevents meaningful discovery. Otherwise, state necessary assumptions and proceed.
+
+## Start the audit
+
+Audit every run before discovery begins.
+
+1. Obtain a random UUID from the operating system and record the current UTC start timestamp. Do not invent either value in model prose.
+2. Create a distinct persistent run directory. Use a user-specified location, or default to `experiments/discovery-and-analysis/<uuid>/` under the available workspace.
+3. Create `receipt.txt` with:
+   - task or run name
+   - UUID
+   - UTC start timestamp
+   - `status=started`
+   - model identifier only when the runtime exposes it reliably
+4. Treat audit metadata as outside the substantive task. Do not use the UUID, timestamps, paths, or receipts as discovery or analysis inputs.
+
+If persistent storage or system-generated UUIDs are unavailable, disclose that limitation before discovery. Create the strongest inline receipt the host supports, mark it `audit=non-durable`, and do not claim a persistent independent audit trail.
 
 ## Phase 1: Discovery
 
@@ -141,6 +157,31 @@ Maximize repeatability when analyzing the same frozen list:
 - After any restart, do not reuse partial evaluations from the discarded attempt.
 
 Exact bit-for-bit identity is not guaranteed for model-generated prose. Prefer stable structure, classifications, scores, rankings, and conclusions over stylistic consistency.
+
+## Finish the audit
+
+After completing the substantive result:
+
+1. Save its exact text, beginning with `Discovery artifact` and excluding audit metadata, as `result.md` in the run directory.
+2. Compute the SHA-256 of the saved `result.md` with a deterministic system utility.
+3. Update `receipt.txt` with the UTC finish timestamp, `status=completed`, and exact result SHA-256.
+4. Return the UUID, receipt path, result path, hash, and substantive result.
+
+If the run fails, update the durable receipt when possible with UTC finish timestamp, `status=failed`, and a short failure reason. Do not create a completed receipt for a partial result.
+
+## Compare multiple runs
+
+Run multiple executions sequentially unless the user explicitly requests parallel execution. Start each with fresh conversation context and do not provide prior outputs, conclusions, or artifacts.
+
+Do not read another run's directory before the current run is complete. Compare runs only after all receipts show `status=completed` and their hashes have been independently verified against the saved files.
+
+When comparing runs:
+
+- Compare saved `result.md` files, not wrapper messages.
+- Report whether they are byte-identical.
+- Compare discovery counts and overlap, analysis contracts, scores or groupings, rankings, conclusions, and restart logs.
+- Treat different audit metadata as evidence of distinct execution, not substantive variation.
+- State that run-specific audit requirements make the complete prompts non-identical even though the substantive task remains the same.
 
 ## Return the result
 
