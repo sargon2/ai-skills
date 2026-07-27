@@ -1,6 +1,6 @@
 ---
 name: "discovery-and-analysis"
-description: "Produce persistent UUID receipts and exact-output hashes for every Discovery and Analysis run."
+description: "Fully develop the leading near-tied ideas with deterministic limits."
 ---
 
 # Discovery and Analysis
@@ -140,6 +140,20 @@ For explanation or sense-making:
 5. End with the smallest coherent synthesis that accounts for the important items.
 
 For mixed tasks, compose only the necessary contracts and declare their order before analysis.
+
+## Develop leading alternatives
+
+When analysis ranks candidate ideas, do not fully develop only the winner when other candidates score similarly.
+
+1. Define the near-tie band before presenting results: within 10% of the maximum possible weighted score below the leader. For example, on a 24-point scale, include candidates within 2.4 points of first place.
+2. Fully develop the leader and every candidate inside that band, subject to the limits below.
+3. Include at least the top 3 eligible, relevant candidates when that many exist, even if fewer than three fall inside the near-tie band.
+4. Default to at most 5 fully developed candidates. The user may request a different limit, but never fully develop more than 10.
+5. If the near-tie band contains more candidates than the active limit, select by the declared ranking and tie-breakers. List the remaining near-tied candidates briefly with scores and note that the output limit excluded their full treatment.
+6. Give each fully developed candidate comparable treatment: what it is, why it scored well, a concrete execution path or implications, important risks and unknowns, and the conditions under which it would beat the leader.
+7. Still identify the leader. Do not blur meaningful score differences or manufacture a portfolio unless the analysis supports one.
+
+For analysis without numeric scoring, treat alternatives as similar when the declared comparison cannot distinguish them on the decisive criteria. Apply the same minimum and caps.
 
 ## Repeatability rules
 
