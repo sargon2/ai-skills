@@ -22,7 +22,7 @@ Default to `standard`. Use `deep` when the user requests thoroughness, the decis
 ## Workflow
 
 1. Define prioritized comparison criteria from the user's actual constraints. Include customer pain, willingness to pay, reachability, competition, differentiation, build/operating burden, risk, and fit. Give decisive criteria observable anchors.
-2. Generate a diverse candidate set. Discovery-and-analysis may be used for divergent ideation, but do not treat its initial ordering as market evidence.
+2. Generate a diverse candidate set. When discovery-and-analysis is active, reuse its discovery artifact, classifications, and comparator rather than repeating discovery or generic selection. Treat its pre-research selection as provisional, and run its sensitivity pass only after market research and recomparison. This skill supplies the market evidence, failure research, concept revision, and business verdict.
 3. Eliminate ideas that violate hard constraints or depend on vague access, contacts, data, distribution, or user resources the prompt excludes.
 4. Use ordinal top-N selection to shortlist 3–5 candidates before spending heavily on research. Preserve ties and incomparability. Label other eligible ideas `not currently selected for further analysis`, not rejected.
 5. For each finalist, research:
@@ -35,8 +35,14 @@ Default to `standard`. Use `deep` when the user requests thoroughness, the decis
 6. Distinguish verified facts, vendor claims, estimates, and inference. Link sources and record access dates for volatile facts. Do not use the absence of found competitors as proof of an open market.
 7. Search specifically for failure evidence: abandoned products, weak reviews, saturated listings, free substitutes, acquisition bottlenecks, and reasons buyers tolerate the current problem.
 8. Revise the product concept in response to evidence. Preserve the original description. A competitor can validate demand while invalidating an undifferentiated implementation.
-9. Recompare finalists only after research using the declared criterion priority. Explain major changes in selection, ordering, ties, or candidate definitions from the initial screen. Use numeric scoring only when inputs have defensible measurements or the user explicitly requests it.
-10. Return a clear verdict for each researched finalist: `pursue`, `modify`, `hold`, or `reject`. Do not force a sole winner when evidence supports a tied or incomparable leading set.
+9. Recompare finalists after research using the declared criterion priority. If evidence disqualifies or materially weakens a finalist, promote the strongest eligible unresearched candidate when it could change the leading set, then research it comparably before assigning a final verdict. Otherwise report the slot unresolved. Explain major changes in selection, ordering, ties, or candidate definitions from the initial screen. Use numeric scoring only when inputs have defensible measurements or the user explicitly requests it.
+10. Return one scoped verdict for each researched finalist:
+    - `pursue`: evidence supports spending the next meaningful unit of effort on the proposed validation or build step;
+    - `modify`: demand may be credible, but the customer, wedge, channel, pricing, or implementation must change first;
+    - `hold`: evidence is insufficient or a prerequisite is unresolved; name the cheapest discriminating check;
+    - `reject`: the current thesis violates a hard constraint or is noncompetitive under the declared criteria.
+
+Do not force a sole winner when evidence supports a tied or incomparable leading set. Report `no credible opportunity found` when none meets the evidence threshold.
 
 ## Minimum evidence standard
 
