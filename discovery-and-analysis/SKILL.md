@@ -89,8 +89,9 @@ Choose an analysis pipeline appropriate to the task. Before evaluating any item,
 4. The comparison method: ordinal by default, or numeric only when justified.
 5. For ordinal comparison: criterion priority, what counts as a meaningful difference, tie and incomparability rules, top-N target, and safety cap.
 6. For numeric comparison: criterion weights, anchored measurement scale, aggregation rule, and tie-breakers.
-7. The rule for handling unknown information.
-8. Deterministic tie-breakers used only where the evidence supports breaking a tie.
+7. The disconfirmation method and the evidence that could change selection.
+8. The rule for handling unknown information.
+9. Deterministic tie-breakers used only where the evidence supports breaking a tie.
 
 Once declared, do not change the contract during that attempt. If the contract is inadequate, finish the attempt, explain the limitation, and propose a revised contract for a new run.
 
@@ -107,8 +108,10 @@ For a decision or prioritization:
 5. Collapse comparison cycles into the same tier. A cycle is evidence that the declared comparator cannot consistently distinguish those candidates, not permission to invent a winner.
 6. Continue comparison only until the top N candidates are separated from the rest, or the unresolved leading tier fills the available selection. Default `N=3`.
 7. Select the top N for full analysis. Tied or incomparable candidates may occupy the selected set. If a tie crosses the cutoff, include all tied candidates up to a default safety cap of 5. The user may set a different cap, never above 10. If the tie exceeds the cap, analyze the tied group collectively first or report the cutoff unresolved.
-8. Stress-test the selected set against key risks, plausible assumption changes, and reasonable changes in criterion priority.
-9. Recommend one candidate, a tied or incomparable leading set, or a clearly defined portfolio. Do not manufacture a single winner when the evidence does not support one.
+8. Run the disconfirmation pass against every selected candidate using comparable scrutiny.
+9. Recompare the selected set after disconfirmation. Demote candidates when contrary evidence warrants it and promote eligible candidates from `not currently selected for further analysis` when they now cross the cutoff.
+10. Stress-test the revised selected set against key risks, plausible assumption changes, and reasonable changes in criterion priority.
+11. Recommend one candidate, a tied or incomparable leading set, or a clearly defined portfolio. Do not manufacture a single winner when the evidence does not support one.
 
 Use numeric scoring only when criteria have defensible measurements or the user explicitly requests a weighted tradeoff model. Define task-specific anchors and show the math. Do not convert qualitative impressions into numbers merely to force a total order.
 
@@ -141,6 +144,24 @@ For explanation or sense-making:
 
 For mixed tasks, compose only the necessary contracts and declare their order before analysis.
 
+## Disconfirmation pass
+
+After initial top-N selection and before the final recommendation, try to overturn the selection.
+
+1. For every selected candidate, hypothesis, or approach, state the strongest plausible reason it should not remain selected.
+2. Identify evidence that would confirm that failure case and could materially change selection.
+3. Seek that evidence when tools and scope permit. Prefer real checks over ceremonial devil's-advocate prose.
+4. Apply comparable scrutiny to every selected candidate, not only the apparent leader.
+5. Distinguish:
+   - `searched and not found`: the specified search did not locate the evidence;
+   - `not searched`: the check was outside available tools, time, or scope;
+   - `evidence of absence`: reliable evidence indicates the condition is absent.
+6. Reapply the declared comparator after the pass. Disconfirming evidence may reorder tiers, create ties or incomparability, demote a selected candidate, or promote one previously not selected.
+7. When evidence is unavailable, preserve the concern as an `unknown` and propose the cheapest discriminating test.
+8. Report what was checked, what was found, and whether the selected set changed.
+
+If the task does not permit external research, use known evidence and explicit tests without pretending that an imagined objection was verified.
+
 ## Develop leading alternatives
 
 When analysis selects candidate ideas, fully develop the selected top N rather than forcing a total ordering of every eligible candidate.
@@ -166,6 +187,7 @@ Maximize repeatability when analyzing the same frozen list:
 - Use explicit task-specific criteria and observable anchors rather than intuitive labels such as `best`.
 - Apply the declared comparator consistently.
 - Treat missing evidence as `unknown`; do not invent facts to resolve uncertainty.
+- Preserve the distinction between `searched and not found`, `not searched`, and `evidence of absence`.
 - Do not use discovery ID to break a substantive tie unless the contract explicitly defines it as a final presentation-only rule.
 - Separate observations from assumptions and value judgments.
 - Do not add criteria or change their priority after comparing candidates.
