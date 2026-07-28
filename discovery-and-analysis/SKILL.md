@@ -1,6 +1,6 @@
 ---
 name: "discovery-and-analysis"
-description: "Fully develop the leading near-tied ideas with deterministic limits."
+description: "Discover broadly, compare candidates, and fully develop a bounded leading set with audit artifacts."
 ---
 
 # Discovery and Analysis
@@ -40,7 +40,7 @@ Number items in generation order as `D001`, `D002`, and so on. Preserve the numb
 
 Keep the discovery artifact intact during analysis. Analysis may annotate, group, expand, or synthesize items, but must preserve original IDs and identify the source IDs of syntheses.
 
-If analysis reveals a genuinely new item, append it with the next ID and evaluate or redo only the affected groupings and comparisons. Record the addition in the restart log as a late discovery; do not discard unaffected work or restart the entire analysis.
+If analysis reveals a genuinely new item, append it with the next ID and evaluate or redo only the affected groupings and comparisons. Record the addition in the revision log as a late discovery; do not discard unaffected work or restart the entire analysis.
 
 ## Phase 2: Analysis
 
@@ -110,7 +110,7 @@ When the user requests multiple runs, execute them sequentially with fresh conve
 Return, in order:
 
 1. `Discovery artifact`: the final numbered list.
-2. `Restart log`: late discoveries and affected work reconsidered, or `None`.
+2. `Revision log`: late discoveries and affected work reconsidered, or `None`.
 3. `Analysis contract`: the fixed comparison policy.
 4. `Analysis`: groupings, comparisons, calculations when used, disconfirmation, sensitivity, and findings.
 5. `Result`: recommendation, plan, diagnosis, synthesis, or other requested output.
