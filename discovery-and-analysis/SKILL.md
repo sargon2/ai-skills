@@ -74,7 +74,7 @@ If analysis reveals a genuinely new item:
 2. Append every new item noticed so far to the discovery artifact in encounter order, assigning the next available discovery IDs.
 3. Run the discovery saturation round once more against the expanded list and append any further discoveries.
 4. Freeze the expanded discovery artifact.
-5. Discard the incomplete analysis contract, scores, rankings, conclusions, and prose from that attempt.
+5. Discard the incomplete analysis contract, comparisons, rankings, conclusions, and prose from that attempt.
 6. Restart Phase 2 from the beginning using only the original task, stated assumptions, and expanded discovery artifact.
 
 Repeat until one complete analysis attempt produces no new discoveries. Never continue a partial analysis against a changed list.
@@ -86,10 +86,11 @@ Choose an analysis pipeline appropriate to the task. Before evaluating any item,
 1. The task type, such as decision, diagnosis, planning, design, explanation, prioritization, risk analysis, or mixed.
 2. The ordered analysis stages that will be used.
 3. The criteria and their definitions.
-4. Any criterion weights.
-5. The scoring scale and anchored meaning of each score.
-6. The rule for handling unknown information.
-7. Deterministic tie-breakers.
+4. The comparison method: ordinal by default, or numeric only when justified.
+5. For ordinal comparison: criterion priority, what counts as a meaningful difference, tie and incomparability rules, top-N target, and safety cap.
+6. For numeric comparison: criterion weights, anchored measurement scale, aggregation rule, and tie-breakers.
+7. The rule for handling unknown information.
+8. Deterministic tie-breakers used only where the evidence supports breaking a tie.
 
 Once declared, do not change the contract during that attempt. If the contract is inadequate, finish the attempt, explain the limitation, and propose a revised contract for a new run.
 
@@ -99,41 +100,40 @@ Use the narrowest suitable contract, adapting labels to the task while retaining
 
 For a decision or prioritization:
 
-1. Eligibility against hard constraints: `pass`, `fail`, or `unknown`.
-2. Score eligible items against 3–7 non-overlapping criteria on a 0–4 anchored scale.
-3. Compute the weighted total.
-4. Rank by weighted total descending, then fewer unknowns, then discovery ID ascending.
-5. Test the leading items against key risks and plausible changes in assumptions.
-6. Recommend one item or a clearly defined portfolio.
+1. Classify eligibility against hard constraints as `eligible`, `ineligible`, or `unknown`.
+2. Define 3–7 non-overlapping decisive criteria in priority order. Give each criterion task-specific observable anchors for weak, mixed, and strong evidence.
+3. Place clearly dominated or noncompetitive eligible candidates in `not currently selected for further analysis`. Keep uncertain or plausibly competitive candidates in the comparison pool.
+4. Compare candidates pairwise using the highest-priority criterion on which the evidence shows a meaningful difference. If neither clearly beats the other, mark them tied or incomparable; do not force an order.
+5. Collapse comparison cycles into the same tier. A cycle is evidence that the declared comparator cannot consistently distinguish those candidates, not permission to invent a winner.
+6. Continue comparison only until the top N candidates are separated from the rest, or the unresolved leading tier fills the available selection. Default `N=3`.
+7. Select the top N for full analysis. Tied or incomparable candidates may occupy the selected set. If a tie crosses the cutoff, include all tied candidates up to a default safety cap of 5. The user may set a different cap, never above 10. If the tie exceeds the cap, analyze the tied group collectively first or report the cutoff unresolved.
+8. Stress-test the selected set against key risks, plausible assumption changes, and reasonable changes in criterion priority.
+9. Recommend one candidate, a tied or incomparable leading set, or a clearly defined portfolio. Do not manufacture a single winner when the evidence does not support one.
 
-Default 0–4 scale:
-
-- `0`: directly harmful or wholly fails the criterion
-- `1`: weak
-- `2`: mixed or adequate
-- `3`: strong
-- `4`: exceptional
+Use numeric scoring only when criteria have defensible measurements or the user explicitly requests a weighted tradeoff model. Define task-specific anchors and show the math. Do not convert qualitative impressions into numbers merely to force a total order.
 
 For diagnosis:
 
 1. Group items into symptoms, candidate causes, evidence, confounders, and tests.
-2. Evaluate each candidate cause for explanatory coverage, consistency with known facts, parsimony, and testability using the anchored 0–4 scale.
-3. Rank by total descending, then fewer unsupported assumptions, then discovery ID ascending.
-4. Specify the cheapest or most informative discriminating tests.
-5. State what evidence would raise or lower each leading hypothesis.
+2. Compare candidate causes by explanatory coverage, consistency with known facts, parsimony, and testability in declared priority order.
+3. Preserve ties and incomparability when available evidence cannot distinguish causes.
+4. Select the leading causes for full development using the same top-N and safety-cap rules.
+5. Specify the cheapest or most informative discriminating tests.
+6. State what evidence would raise or lower each leading hypothesis.
 
 For planning or design:
 
 1. Group items into goals, constraints, resources, actions, dependencies, risks, and feedback signals.
 2. Remove no items; mark inapplicable ones with reasons.
 3. Build candidate approaches from the items and cite their source IDs.
-4. Evaluate feasibility, impact, reversibility, cost, risk, and information value on the anchored 0–4 scale, reversing cost and risk so higher is better.
-5. Order selected actions by dependency, then information value, then discovery ID of the earliest contributing item.
-6. Produce checkpoints and explicit stop, continue, or revise conditions.
+4. Compare approaches by feasibility, impact, reversibility, cost, risk, and information value in a declared task-specific priority order.
+5. Select approaches using the same top-N, tie, incomparability, and safety-cap rules.
+6. Order selected actions by dependency, then information value, then the earliest contributing discovery ID only when still tied.
+7. Produce checkpoints and explicit stop, continue, or revise conditions.
 
 For explanation or sense-making:
 
-1. Group items by concept without scoring unless ranking is useful.
+1. Group items by concept without ranking unless ranking is useful.
 2. Identify relationships: cause, dependency, contrast, example, feedback loop, uncertainty, or boundary.
 3. Build the explanation from foundational concepts to consequences.
 4. Preserve unresolved contradictions and unknowns rather than smoothing them over.
@@ -143,17 +143,19 @@ For mixed tasks, compose only the necessary contracts and declare their order be
 
 ## Develop leading alternatives
 
-When analysis ranks candidate ideas, do not fully develop only the winner when other candidates score similarly.
+When analysis selects candidate ideas, fully develop the selected top N rather than forcing a total ordering of every eligible candidate.
 
-1. Define the near-tie band before presenting results: within 10% of the maximum possible weighted score below the leader. For example, on a 24-point scale, include candidates within 2.4 points of first place.
-2. Fully develop the leader and every candidate inside that band, subject to the limits below.
-3. Include at least the top 3 eligible, relevant candidates when that many exist, even if fewer than three fall inside the near-tie band.
+1. Default to the top 3 eligible, relevant candidates when that many exist.
+2. Tied or incomparable candidates may appear anywhere in the selected set, including the leading tier.
+3. If a tie crosses the N cutoff, include all tied candidates up to the active safety cap. If the tied group exceeds the cap, analyze the group collectively first or report that the cutoff remains unresolved.
 4. Default to at most 5 fully developed candidates. The user may request a different limit, but never fully develop more than 10.
-5. If the near-tie band contains more candidates than the active limit, select by the declared ranking and tie-breakers. List the remaining near-tied candidates briefly with scores and note that the output limit excluded their full treatment.
-6. Give each fully developed candidate comparable treatment: what it is, why it scored well, a concrete execution path or implications, important risks and unknowns, and the conditions under which it would beat the leader.
-7. Still identify the leader. Do not blur meaningful score differences or manufacture a portfolio unless the analysis supports one.
-
-For analysis without numeric scoring, treat alternatives as similar when the declared comparison cannot distinguish them on the decisive criteria. Apply the same minimum and caps.
+5. Give each selected candidate comparable treatment: what it is, why it was selected, a concrete execution path or implications, important risks and unknowns, and the conditions under which it would become preferable or cease to qualify.
+6. Identify a sole leader only when the declared comparison supports one. Otherwise report the leading tier, ties, or incomparability explicitly.
+7. Classify all candidates in the final result as:
+   - `Selected for full analysis`: the top N, including tied or incomparable candidates.
+   - `Not currently selected for further analysis`: eligible candidates below the cutoff, with a brief reason or category but no fabricated exact rank.
+   - `Ineligible`: candidates that violate a hard constraint.
+   - `Unknown`: candidates lacking enough information even for screening.
 
 ## Repeatability rules
 
@@ -161,16 +163,16 @@ Maximize repeatability when analyzing the same frozen list:
 
 - Use only the original task, stated assumptions, frozen discovery artifact, and analysis contract as inputs.
 - Keep item IDs and generation order unchanged.
-- Use explicit anchored criteria rather than intuitive labels such as “best.”
-- Use arithmetic totals where scoring is appropriate.
+- Use explicit task-specific criteria and observable anchors rather than intuitive labels such as `best`.
+- Apply the declared comparator consistently.
 - Treat missing evidence as `unknown`; do not invent facts to resolve uncertainty.
-- Apply the declared tie-breakers mechanically.
+- Do not use discovery ID to break a substantive tie unless the contract explicitly defines it as a final presentation-only rule.
 - Separate observations from assumptions and value judgments.
-- Do not add criteria after seeing scores.
-- Report enough of the scoring or grouping to reproduce the result.
+- Do not add criteria or change their priority after comparing candidates.
+- Report enough pairwise reasoning, tiers, classifications, or numeric calculations to reproduce the result.
 - After any restart, do not reuse partial evaluations from the discarded attempt.
 
-Exact bit-for-bit identity is not guaranteed for model-generated prose. Prefer stable structure, classifications, scores, rankings, and conclusions over stylistic consistency.
+Exact bit-for-bit identity is not guaranteed for model-generated prose. Prefer stable structure, classifications, selected sets, comparisons, and conclusions over stylistic consistency.
 
 ## Finish the audit
 
@@ -193,7 +195,7 @@ When comparing runs:
 
 - Compare saved `result.md` files, not wrapper messages.
 - Report whether they are byte-identical.
-- Compare discovery counts and overlap, analysis contracts, scores or groupings, rankings, conclusions, and restart logs.
+- Compare discovery counts and overlap, analysis contracts, tiers or numeric results, selected sets, conclusions, and restart logs.
 - Treat different audit metadata as evidence of distinct execution, not substantive variation.
 - State that run-specific audit requirements make the complete prompts non-identical even though the substantive task remains the same.
 
@@ -204,7 +206,7 @@ Return, in order:
 1. `Discovery artifact`: the final complete numbered list.
 2. `Restart log`: each analysis restart and the discovery IDs appended before it, or `None`.
 3. `Analysis contract`: the fixed method used for the completed attempt.
-4. `Analysis`: groupings, calculations, stages, and findings.
+4. `Analysis`: groupings, comparisons, calculations when used, stages, and findings.
 5. `Result`: recommendation, plan, diagnosis, synthesis, or other requested output.
 6. `Uncertainties`: unknowns and assumptions that could change the result.
 
