@@ -97,7 +97,9 @@ After completing the substantive result:
 1. Save its exact text, beginning with `Discovery artifact` and excluding audit metadata, as `result.md` in the run directory.
 2. Compute its SHA-256 with a deterministic system utility.
 3. Update `receipt.txt` with the UTC finish timestamp, `status=completed`, and exact result hash.
-4. Return the UUID, receipt path, result path, hash, and substantive result.
+4. In chat, return the UUID, receipt path, result path, hash, and a concise substantive summary.
+
+Writing `result.md` and `receipt.txt` to the filesystem is sufficient. Assume the user will inspect them there. Do not attach, upload, or reproduce either file in chat unless the user explicitly requests it.
 
 If the run fails, update the receipt when possible with a finish timestamp, `status=failed`, and a short reason. Never create a completed receipt for a partial result.
 
@@ -105,9 +107,9 @@ If the run fails, update the receipt when possible with a finish timestamp, `sta
 
 When the user requests multiple runs, execute them sequentially with fresh conversation context unless parallel execution is explicitly requested. Do not expose prior outputs to later runs. After independently verifying all completed receipt hashes, compare the saved `result.md` files for byte identity, discovery overlap, contracts, selected sets, conclusions, and late discoveries. Different audit metadata proves distinct execution but is not substantive variation.
 
-## Return the process
+## Write the process
 
-Return, in order:
+Write `result.md` in this order:
 
 1. `Discovery artifact`: the final numbered list.
 2. `Revision log`: late discoveries and affected work reconsidered, or `None`.
@@ -116,4 +118,4 @@ Return, in order:
 5. `Result`: recommendation, plan, diagnosis, synthesis, or other requested output.
 6. `Uncertainties`: unknowns and assumptions that could change the result.
 
-Keep discovery and analysis visibly distinct. Never rewrite the discovery artifact to make the analysis look cleaner. Report enough reasoning to make classifications, selected sets, and conclusions reproducible.
+Keep discovery and analysis visibly distinct. Never rewrite the discovery artifact to make the analysis look cleaner. Record enough reasoning to make classifications, selected sets, and conclusions reproducible.
