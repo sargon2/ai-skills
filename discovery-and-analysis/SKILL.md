@@ -90,8 +90,9 @@ Choose an analysis pipeline appropriate to the task. Before evaluating any item,
 5. For ordinal comparison: criterion priority, what counts as a meaningful difference, tie and incomparability rules, top-N target, and safety cap.
 6. For numeric comparison: criterion weights, anchored measurement scale, aggregation rule, and tie-breakers.
 7. The disconfirmation method and the evidence that could change selection.
-8. The rule for handling unknown information.
-9. Deterministic tie-breakers used only where the evidence supports breaking a tie.
+8. The sensitivity bounds: which uncertain assumptions, criterion priorities, or meaningful-difference thresholds may reasonably vary.
+9. The rule for handling unknown information.
+10. Deterministic tie-breakers used only where the evidence supports breaking a tie.
 
 Once declared, do not change the contract during that attempt. If the contract is inadequate, finish the attempt, explain the limitation, and propose a revised contract for a new run.
 
@@ -110,7 +111,7 @@ For a decision or prioritization:
 7. Select the top N for full analysis. Tied or incomparable candidates may occupy the selected set. If a tie crosses the cutoff, include all tied candidates up to a default safety cap of 5. The user may set a different cap, never above 10. If the tie exceeds the cap, analyze the tied group collectively first or report the cutoff unresolved.
 8. Run the disconfirmation pass against every selected candidate using comparable scrutiny.
 9. Recompare the selected set after disconfirmation. Demote candidates when contrary evidence warrants it and promote eligible candidates from `not currently selected for further analysis` when they now cross the cutoff.
-10. Stress-test the revised selected set against key risks, plausible assumption changes, and reasonable changes in criterion priority.
+10. Sensitivity-test only reasonable changes to uncertain assumptions, criterion priority, and meaningful-difference thresholds that could alter the revised top-N set. Do not vary settled facts or enumerate changes that cannot affect selection. Report the stable core, conditional selections, and whether the conclusion is robust or unstable.
 11. Recommend one candidate, a tied or incomparable leading set, or a clearly defined portfolio. Do not manufacture a single winner when the evidence does not support one.
 
 Use numeric scoring only when criteria have defensible measurements or the user explicitly requests a weighted tradeoff model. Define task-specific anchors and show the math. Do not convert qualitative impressions into numbers merely to force a total order.
